@@ -20,8 +20,8 @@ class Quiz(models.Model):
 class Question(models.Model):
     description = models.TextField(verbose_name='Вопрос')
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='question')
-    timer = models.PositiveIntegerField(default=0)
-    point = models.PositiveIntegerField(default=0)
+    timer = models.PositiveIntegerField(default=20)
+    point = models.PositiveIntegerField(default=100)
     image = models.ImageField(blank=True, upload_to='Images')
 
     class Meta:
@@ -56,3 +56,5 @@ class Journal(models.Model):
 
     def __str__(self):
         return 'Journal'
+
+

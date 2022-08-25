@@ -1,7 +1,6 @@
 from datetime import timedelta, datetime
 
 import jwt
-from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -36,13 +35,15 @@ class User(AbstractBaseUser):
     second_name = models.CharField(max_length=50, blank=True)
     login = models.EmailField(primary_key=True)
     phone_number = models.CharField(max_length=15, blank=True)
-    # passed_tests = models.SmallIntegerField(blank=True, null=True)
-    group = models.ForeignKey(Group, on_delete=models.RESTRICT, null=True)
+    group = models.ManyToManyField(Group, null=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     activation_code = models.CharField(max_length=5, blank=True)
-    score = models.PositiveIntegerField(default=0)
-
+    score = models.PositiveIntegerField(default=0, blank=True)
+    answered_questions = models.JSONField(default=dict, blank=True, null=True)
+    quizz_and_ans = models.JSONField(default=dict, blank=True, null=True)
+    passed_tests = models.SmallIntegerField(blank=True, null=True)
+    rank = models.PositiveIntegerField(default=0, blank=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'login'
@@ -60,7 +61,18 @@ class User(AbstractBaseUser):
     def get_all_permissions(self, obj=None):
         return ''
 
+    # def list_of_groups(self):
+    #     print(self.groups.all(), type(self.groups.all()))
+    #     return ', '.join(map(str, self.groups.all()))
 
 
+class LeaderBoard(User):
 
+    class Meta:
+        verbose_name = "Таблица лидеров"
+        verbose_name_plural = verbose_name
+        proxy = True
+
+    def __str__(self):
+        return 'Leaders'
 

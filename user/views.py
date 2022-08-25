@@ -20,40 +20,24 @@ class UserAPIView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'login']
-
-#
-# class LoginAPIView(CreateAPIView):
-#
-#     serializer_class = LoginSerializer
-#
-#     def post(self, request):
-#         data = request.data
-#         queryset = User.objects.get(email=data['email'])
-#         serializer = LoginSerializer(queryset, data=data)
-#         email = request.POST.get('email', )
-#         password = request.POST.get('password')
-#         user = authenticate(request, email=email, password=password)
-#         if serializer.is_valid(raise_exception=True):
-#             return Response(status=status.HTTP_200_OK)
-#         if user is not None:
-#             login(request, user)
-#             print(request.user)
-#             return Response('Invalid Data')
+    search_fields = ['name', 'second_name', 'login']
 
 
 class RegistrationView(APIView):
+    """
+    Регистрация
+    """
     @swagger_auto_schema(request_body=RegistrationSerializer, tags=['account'])
     def post(self, request):
         data = request.data
         serializer = RegistrationSerializer(data=data)
-        print(request.user)
         if serializer.is_valid(raise_exception=True):
             serializer.create()
             return Response('Successfully created', status=status.HTTP_201_CREATED)
 
 
 class LoginView(TokenObtainPairView):
+    """ Логин """
     serializer_class = LoginSerializer
 
 

@@ -4,29 +4,27 @@ from main.models import *
 import nested_admin
 
 
-class AnswerInline(admin.StackedInline):
+class AnswerInline(nested_admin.NestedStackedInline):
 
     model = Answer
     max_num = 4 
     extra = 4
 
-
-class QuestionInline(admin.StackedInline):
+class QuestionInline(nested_admin.NestedStackedInline):
     inlines = [AnswerInline]
-    model = Question 
-    min_num = 1
-    extra = 0
+    model = Question
+    extra = 4
 
 
-class QuestionAdmin(admin.ModelAdmin):
-    inlines = [AnswerInline, ]
+# class QuestionAdmin(nested_admin.NestedStackedInline):
+#     inlines = [AnswerInline, ]
 
-
-class QuizAdmin(admin.ModelAdmin):
+class QuizAdmin(nested_admin.NestedModelAdmin):
     inlines = [QuestionInline, ]
 
-
+#
 admin.site.register(Quiz, QuizAdmin)
-admin.site.register(Question, QuestionAdmin)
+# admin.site.register(Question,)
+
 
 
