@@ -32,7 +32,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id', 'name', 'second_name', 'phone_number', 'score', 'passed_tests',
+                  'rank', 'group']
 
 
 class RegistrationSerializer(serializers.Serializer):

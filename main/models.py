@@ -8,6 +8,7 @@ class Quiz(models.Model):
     title = models.CharField(max_length=256, verbose_name='Название')
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='quiz')
     is_active = models.BooleanField(default=True, verbose_name='Активно:')
+    passed_members = models.FloatField(default=0)
 
     class Meta:
         verbose_name = 'Тест'

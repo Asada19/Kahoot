@@ -31,9 +31,9 @@ class RegistrationView(APIView):
     def post(self, request):
         data = request.data
         serializer = RegistrationSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.create()
-            return Response('Successfully created', status=status.HTTP_201_CREATED)
+        serializer.is_valid(raise_exception=True)
+        serializer.create()
+        return Response('Successfully created', status=status.HTTP_201_CREATED)
 
 
 class LoginView(TokenObtainPairView):

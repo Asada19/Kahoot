@@ -22,15 +22,19 @@ class QuizAPIView(generics.ListAPIView):
     """
     permission_classes = [IsAuthenticated]
     serializer_class = QuizSerializer
-
+    
+    def get_queryset(self):
+        queryset = Quiz.objects.filter(group__in=self.request.user.group.all())
+        return queryset
+    
     def get(
             self,
             request,
             format=None,
             **kwargs):
 
-        queryset = Quiz.objects.filter(group__in=request.user.group.all())
-        serializer = QuizSerializer(queryset, many=True)
+        queryset = self.get_queryset()
+        serializer = self.get_serializer_class(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -68,9 +72,12 @@ class GetAnswerAPIView(generics.CreateAPIView):
         """ POST - запрос который вытаскивает время из запроса, и отправляет ответ """
         queryset = self.get_object()
         answer_time = request.data.get('answer_time')
+        user = User.objects.get(pk=request.user.pk)
+        print(user.quizz_and_ans)
         if str(question_id) not in request.user.answered_questions:
             # request.user.answered_questions.update({question_id: 0})
             get_score(request, answer_time, question_id, queryset)  # Бизнес логика заключенная в service.py
+            count_passed_test(request)
             global_rank(request)
             # local_group_rank(request, **kwargs)
             return Response('Successfully created')

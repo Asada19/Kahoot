@@ -10,14 +10,17 @@ class AnswerInline(nested_admin.NestedStackedInline):
     max_num = 4 
     extra = 4
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 class QuestionInline(nested_admin.NestedStackedInline):
     inlines = [AnswerInline]
     model = Question
     extra = 4
 
+    def has_delete_permission(self, request, obj=None):
+        return False
 
-# class QuestionAdmin(nested_admin.NestedStackedInline):
-#     inlines = [AnswerInline, ]
 
 class QuizAdmin(nested_admin.NestedModelAdmin):
     inlines = [QuestionInline, ]
