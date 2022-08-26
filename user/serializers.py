@@ -1,7 +1,5 @@
-from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
 from .models import User
 
 
@@ -32,8 +30,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'name', 'second_name', 'phone_number', 'score', 'passed_tests',
-                  'rank', 'group']
+        fields = ['name', 'second_name', 'phone_number', 'score', 'passed_tests',
+                  'rank', 'list_of_groups']
 
 
 class RegistrationSerializer(serializers.Serializer):

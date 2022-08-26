@@ -2,14 +2,12 @@ from django.contrib.auth import authenticate, login
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, filters
 from rest_framework.generics import CreateAPIView, ListAPIView
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
-
-from .models import *
-from .serializers import *
+from .serializers import UserSerializer, RegistrationSerializer, LoginSerializer
+from .models import User
 
 
 class UserAPIView(ListAPIView):
@@ -18,6 +16,7 @@ class UserAPIView(ListAPIView):
     """
 
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'second_name', 'login']

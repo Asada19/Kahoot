@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.models import *
+from main.models import Answer, Question, Quiz
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    answer = AnswerSerializer(many=True)
+    answer = AnswerSerializer(many=True)  # замена функции representation
 
     class Meta:
         model = Question
@@ -29,14 +29,3 @@ class QuizSerializer(serializers.ModelSerializer):
 class GetAnswerSerializer(serializers.Serializer):
     answer = serializers.IntegerField(required=True)
     answer_time = serializers.IntegerField(required=True)
-
-
-
-# question = Question.objects.all()
-
-# class GroupSerializer(serializers.Serializer):
-#     name = Quiz.objects.all(title=question.quiz)
-#     count_test = Quiz.objects.all().get(id=question.id)
-
-
-

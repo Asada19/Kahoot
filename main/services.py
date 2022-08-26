@@ -20,7 +20,6 @@ def get_score(
         if answer.choice:
             if answer_time < time:
                 scores = point - (point / time * answer_time)
-                # request.user.score += scores
                 request.user.answered_questions.update({str(question_id): scores})
                 request.user.score = sum(request.user.answered_questions.values())
                 data_of_test = request.user.quizz_and_ans
@@ -44,14 +43,11 @@ def global_rank(request):
 
 def count_passed_test(request):
     quiz_list = request.user.quizz_and_ans
-    print(quiz_list)
     passed_tests = 0
     for i in quiz_list:
-        print(i)
         if set(quiz_list[i]).issubset(set(request.user.answered_questions.keys())):
             passed_tests += 0.5
             res = Quiz.objects.filter(id=int(i))
-            # res = request.user.group.quiz
             for q in res:
                 q.passed_members += 0.5
                 q.save()

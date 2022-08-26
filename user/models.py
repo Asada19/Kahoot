@@ -1,17 +1,11 @@
-from datetime import timedelta, datetime
-
-import jwt
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
-    PermissionsMixin, Group,
-)
-
-from Kahhot import settings
+    PermissionsMixin, Group, UserManager,)
 
 
-class UserManager(BaseUserManager):
+class MyUserManager(BaseUserManager):
     def _create(self, login, password, name, **fields):
         login = self.normalize_email(login)
         user = self.model(login=login, name=name, **fields)
@@ -44,13 +38,15 @@ class User(AbstractBaseUser):
     quizz_and_ans = models.JSONField(default=dict, blank=True, null=True)
     passed_tests = models.SmallIntegerField(blank=True, null=True)
     rank = models.PositiveIntegerField(default=0, blank=True)
-    objects = UserManager()
 
     USERNAME_FIELD = 'login'
     REQUIRED_FIELDS = ['name']
 
     def __str__(self):
         return self.login
+
+    def list_of_groups(self):
+        return ', '.join(map(str, self.group.all()))
 
     def has_module_perms(self, app_label):
         return self.is_staff
@@ -61,9 +57,7 @@ class User(AbstractBaseUser):
     def get_all_permissions(self, obj=None):
         return ''
 
-    # def list_of_groups(self):
-    #     print(self.groups.all(), type(self.groups.all()))
-    #     return ', '.join(map(str, self.groups.all()))
+    objects = MyUserManager()
 
 
 class LeaderBoard(User):

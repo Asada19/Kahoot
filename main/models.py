@@ -1,13 +1,11 @@
 from django.contrib.auth.models import Group
 from django.db import models
 
-from user.models import User
-
 
 class Quiz(models.Model):
     title = models.CharField(max_length=256, verbose_name='Название')
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='quiz')
-    is_active = models.BooleanField(default=True, verbose_name='Активно:')
+    is_active = models.BooleanField(default=True, verbose_name='Активный')
     passed_members = models.FloatField(default=0)
 
     class Meta:
@@ -45,17 +43,5 @@ class Answer(models.Model):
     def __str__(self):
         return self.description
 
-
-class Journal(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='journal')
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='journal')
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='journal')
-
-    class Meta:
-        verbose_name = 'Записи'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return 'Journal'
 
 
