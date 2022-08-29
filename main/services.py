@@ -45,12 +45,14 @@ def count_passed_test(request):
     quiz_list = request.user.quizz_and_ans
     passed_tests = 0
     for i in quiz_list:
-        if set(quiz_list[i]).issubset(set(request.user.answered_questions.keys())):
+        res = Quiz.objects.filter(id=int(i))
+        if set(quiz_list[str(i)]).issubset(set(request.user.answered_questions.keys())):
             passed_tests += 0.5
-            res = Quiz.objects.filter(id=int(i))
+            print(res)
             for q in res:
                 q.passed_members += 0.5
-                q.save()
+
+        Quiz.objects.bulk_update(res, fields=['passed_members'])
 
     request.user.passed_tests = passed_tests
     request.user.save()

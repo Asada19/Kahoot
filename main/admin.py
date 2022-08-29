@@ -4,7 +4,6 @@ import nested_admin
 
 
 class AnswerInline(nested_admin.NestedStackedInline):
-
     model = Answer
     max_num = 4 
     extra = 4
@@ -21,6 +20,7 @@ class QuestionInline(nested_admin.NestedStackedInline):
 
 class QuizAdmin(nested_admin.NestedModelAdmin):
     inlines = [QuestionInline, ]
+    list_display = ['title', 'count_questions', ]
 
 
 admin.site.register(Quiz, QuizAdmin)

@@ -35,7 +35,7 @@ class User(AbstractBaseUser):
     activation_code = models.CharField(max_length=5, blank=True)
     score = models.PositiveIntegerField(default=0, blank=True)
     answered_questions = models.JSONField(default=dict, blank=True, null=True)
-    quizz_and_ans = models.JSONField(default=dict, blank=True, null=True)
+    quizz_and_ans = models.JSONField(default=dict, blank=True, null=True, unique=True)
     passed_tests = models.SmallIntegerField(blank=True, null=True)
     rank = models.PositiveIntegerField(default=0, blank=True)
 

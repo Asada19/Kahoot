@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+from main.services import global_rank
 from user.models import User, LeaderBoard
 
 

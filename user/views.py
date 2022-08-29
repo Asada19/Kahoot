@@ -6,6 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+from main.services import global_rank
 from .serializers import UserSerializer, RegistrationSerializer, LoginSerializer
 from .models import User
 
@@ -32,6 +34,7 @@ class RegistrationView(APIView):
         serializer = RegistrationSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.create()
+        global_rank(request)
         return Response('Successfully created', status=status.HTTP_201_CREATED)
 
 

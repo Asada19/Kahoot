@@ -8,6 +8,9 @@ class Quiz(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Активный')
     passed_members = models.FloatField(default=0)
 
+    def count_questions(self):
+        return self.question.count()
+
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тест'
